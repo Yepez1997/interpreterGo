@@ -9,9 +9,15 @@ type Token struct {
 	Literal string
 }
 
+// keywords read from the lexer and mapped to the correct token
 var keywords = map[string]TokenType{
-	"fn":  FUNCTION,
-	"let": LET,
+	"fn":     FUNCTION,
+	"let":    LET,
+	"false":  FALSE,
+	"true":   TRUE,
+	"return": RETURN,
+	"if":     IF,
+	"else":   ELSE,
 }
 
 // LookUpIdent - look in the set of key words for the right token type
@@ -33,8 +39,15 @@ const (
 	INT   = "INT"
 
 	// operators
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	SLASH    = "/"
+	ASTERISK = "*"
+
+	LT = "<"
+	GT = ">"
 
 	// delimeters
 	COMMA     = ","
@@ -48,4 +61,12 @@ const (
 	// key words
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
+
+	NOT_EQ = "!="
+	EQ     = "=="
 )

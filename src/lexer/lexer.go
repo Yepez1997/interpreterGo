@@ -50,7 +50,16 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		// check for double ==
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			literal := string(ch) + string(ch)
+			tok = token.Token{Type: token.EQ, Literal: literal}
+
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -65,6 +74,26 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.COMMA, l.ch)
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+	case '!':
+		// check for not equal
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			literal := string(ch) + string(l.ch)
+			tok = token.Token{Type: token.NOT_EQ, Literal: literal}
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
+	case '<':
+		tok = newToken(token.LT, l.ch)
+	case '>':
+		tok = newToken(token.GT, l.ch)
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
@@ -102,12 +131,22 @@ func (l *Lexer) readIdentifier() string {
 
 // readNumber - keep reading the input for every valid digit
 func (l *Lexer) readNumber() string {
+	// very simplified as we can add floats, hex, octal notation etc ...
 	position := l.position
-
 	for isDigit(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]
+}
+
+// peekChar - peek the next character in the input sequence
+
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.readPosition]
+	}
 }
 
 // isLetter - return if the byte is a letter
