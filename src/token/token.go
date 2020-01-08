@@ -9,6 +9,20 @@ type Token struct {
 	Literal string
 }
 
+var keywords = map[string]TokenType{
+	"fn":  FUNCTION,
+	"let": LET,
+}
+
+// LookUpIdent - look in the set of key words for the right token type
+func LookUpIdent(ident string) TokenType {
+	// comma, ok idiom
+	if tok, ok := keywords[ident]; ok {
+		return tok
+	}
+	return IDENT
+}
+
 // set of token types
 const (
 	ILLEGAL = "ILLEGAL"
