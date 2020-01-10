@@ -7,7 +7,7 @@ import (
 	"io"
 
 	lexer "github.com/Yepez1997/interpreterGo/src/lexer"
-	"github.com/Yepez1997/interpreterGo/src/token"
+	token "github.com/Yepez1997/interpreterGo/src/token"
 )
 
 const PROMPT = ">> "
